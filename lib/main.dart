@@ -1,14 +1,17 @@
 import 'dart:async';
-
 import 'package:flutter/widgets.dart';
-
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
+//main is async because functions use await and functions using await must be async.
 
 void main() async {
   // Avoid errors caused by flutter upgrade.
   // Importing 'package:flutter/widgets.dart' is required.
   WidgetsFlutterBinding.ensureInitialized();
+
+  //a variable database holds reference to the sqlite database
+
   final database = openDatabase(
     // Set the path to the database. Note: Using the `join` function from the
     // `path` package is best practice to ensure the path is correctly
@@ -25,6 +28,8 @@ void main() async {
     version: 1,
   );
 
+  //building insert func (1)
+
   Future<void> insertDog(Dog dog) async {
     // Get a reference to the database.
     final Database db = await database;
@@ -38,6 +43,8 @@ void main() async {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
+
+  //func to read database, returns List<Dog>
 
   Future<List<Dog>> dogs() async {
     // Get a reference to the database.
@@ -56,6 +63,8 @@ void main() async {
     });
   }
 
+  //update db (3)
+
   Future<void> updateDog(Dog dog) async {
     // Get a reference to the database.
     final db = await database;
@@ -71,6 +80,8 @@ void main() async {
     );
   }
 
+  //delete db (4)
+
   Future<void> deleteDog(int id) async {
     // Get a reference to the database.
     final db = await database;
@@ -84,6 +95,8 @@ void main() async {
       whereArgs: [id],
     );
   }
+
+  //all four crud done
 
   var fido = Dog(
     id: 0,
